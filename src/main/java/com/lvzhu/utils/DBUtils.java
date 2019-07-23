@@ -13,8 +13,7 @@ import com.lvzhu.bean.TableEntity;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
-
+import org.apache.commons.text.WordUtils;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
