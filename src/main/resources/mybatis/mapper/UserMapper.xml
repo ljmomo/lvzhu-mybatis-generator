@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lvzhu.dal.dao.UserMapper">
+
+    <resultMap type="com.lvzhu.dal.dataobject.UserDO" id="userMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <sql id="columns"> id
+        ,name
+        ,age
+        ,type </sql>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.lvzhu.dal.dataobject.UserDO">
+        INSERT INTO lvzhu.sys_user(name,age,type)
+        VALUES(#{name},#{age},#{type})
+    </insert>
+
+    <insert id="saveSelective" useGeneratedKeys="true" keyProperty="id"
+                parameterType="com.lvzhu.dal.dataobject.UserDO">
+            INSERT INTO lvzhu.sys_user(
+            <trim suffix="" suffixOverrides=",">
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="age != null">
+                    age,
+                </if>
+                <if test="type != null">
+                    type,
+                </if>
+            </trim>
+            )
+            VALUES(
+            <trim suffix="" suffixOverrides=",">
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="age != null">
+                    #{age},
+                </if>
+                <if test="type != null">
+                    #{type},
+                </if>
+            </trim>
+            )
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM lvzhu.sys_user WHERE id=#{id}
+    </delete>
+
+    <delete id="deleteBatchById">
+        DELETE FROM lvzhu.sys_user WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateById" parameterType="com.lvzhu.dal.dataobject.UserDO">
+        UPDATE lvzhu.sys_user
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <select id="getById" resultMap="userMap">
+        SELECT <include refid="columns"/>
+        FROM lvzhu.sys_user
+        WHERE id = #{id}
+    </select>
+
+    <select id="listById" resultMap="userMap">
+        SELECT <include refid="columns"/>
+        FROM lvzhu.sys_user
+        WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+
+    <select id="listByParam" resultMap="userMap" parameterType="java.util.Map">
+        SELECT <include refid="columns"/>
+        FROM lvzhu.sys_user
+        <where>
+            <if test="name !=null">
+                AND name = #{name}
+            </if>
+            <if test="age !=null">
+                AND age = #{age}
+            </if>
+            <if test="type !=null">
+                AND type = #{type}
+            </if>
+        </where>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="countByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+        SELECT count(*)
+        FROM lvzhu.sys_user
+        <where>
+            <if test="name !=null">
+                AND name = #{name}
+            </if>
+            <if test="age !=null">
+                AND age = #{age}
+            </if>
+            <if test="type !=null">
+                AND type = #{type}
+            </if>
+        </where>
+    </select>
+
+</mapper>
