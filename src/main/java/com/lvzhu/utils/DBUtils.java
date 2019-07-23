@@ -21,6 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author lvzhu.
+ * Time 2019-07-22 19:12
+ * Desc 文件路径类
+ */
 public class DBUtils {
 
     private static Map<String, String> typeMap= new HashMap<>();
